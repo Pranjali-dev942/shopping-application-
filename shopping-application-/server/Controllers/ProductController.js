@@ -1,47 +1,65 @@
 const express = require('express');
 const router = express.Router();
-
-
-let products = [{id: 1, name: "Phone", Quantiy: 80, price:20000, description: "a good smartphone"},
-              {id: 2, name: "laptop", Quantiy: 30, price:20000, description: "a good laptop"}];
-
-
-let userCart = []
+const ProductService = require('../Services/ProductService');
 
 
 
-router.get('/', (req, res) => {
-    return res.status(200).send(products);
+
+
+
+const getAllProducts =(req, res) => {
+  const productAll = ProductService.GetAllProducts()
+  console.log(productAll,"prof")
+ if(productAll== null){
+  return res.status(404).json({message:"There are no products"});
+} 
+else{
+  return res.status(200).send(productAll);
   
-})
+}
+  }  
 
-router.get('/:id' , (req, res) => {
-    // const {id} = req.body
-    for(let i=0; i < products.length; i++){
-       if( products[i].id== req.params.id){
-         return res.status(200).send(products[i])
-       }
-      
-    }    
-  return res.status(404).json({message: "Id not found "})
 
-})
 
-router.put( '/:id' ,(req, res) => {
+
+const getProductById= (req, res) => {
+  const desiredProduct = ProductService.GetProductById(req.params);
+if(desiredProduct==null){
+  return res.status(404).json({message:"desired product doesnt exist"});
+} 
+else{
+  return res.status(200).send(desiredProduct);
+}
+}
+
+const updateProduct = (req, res) => {
 
     
-} )
+} 
 
 
-router.post('/addToCart', (req, res ) => {
-     const{id} = req.body
-     for( let i =0; i <products.length; i++){
-        if(products[i].id=id){
-            const myCart= products[i]
-            userCart.push(myCart);
-            return res.status(200).send(userCart);
-        }
-     }
-     return res.status(404).json({message:" not found"});
-})
-module.exports = router;
+const addTOcart=  (req, res ) => {
+  const {id, quantity}=req.body
+
+   const addToCartD=ProductService.AddToCart(id, quantity);
+  
+   console.log(addToCartD,"addto cart")
+
+   if(addToCartD== null){
+    return res.status(404).json({message:" not found"});
+
+   }
+
+     return res.status(200).send(addToCartD.userCart)
+
+}
+
+const showCart= (req, res) =>{
+ const showCart= ProductService.ShowCart()
+ if(showCart==null){
+  return res.status(404).json({message:"not found"})
+ }
+return res.status(200).send(showCart)
+ 
+}
+module.exports = {getAllProducts,getProductById,updateProduct,addTOcart,showCart}
