@@ -1,18 +1,24 @@
-const express =require('express')
-const router =express.Router()
-const {getAllProducts,getProductById,updateProduct,addTOcart,showCart} =require('../Controllers/ProductController')
+const express = require('express');
+const router = express.Router();
+const {
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  addToCart,
+  removeFromCart,
+  showCart,
+} = require('../Controllers/ProductController');
 
+router.get('/', getAllProducts);
 
+router.get('/:id', getProductById);
 
-router.get('/',getAllProducts)
+router.put('/:id', updateProduct);
 
-router.get('/:id',getProductById)
+router.post('/cart/addToCart', addToCart);
 
-        
-router.put( '/:id' ,updateProduct)
-    
-router.post('/addToCart',addTOcart)
+router.post('/cart/removeFromCart', removeFromCart);
 
-    router.get('/showcart',showCart)
+router.get('/cart/showCart', showCart);
 
-    module.exports=router;
+module.exports = router;

@@ -1,6 +1,12 @@
 {
   "dependencies": {
     "express": "^4.19.2"
-   
+  },
+  "scripts": {
+     "format": "prettier --write \"{Controllers,Services,Routes}/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+      "start": "nodemon app.js"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.0"
   }
 }
