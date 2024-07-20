@@ -1,8 +1,13 @@
-const express =require('express')
-const router =express.Router()
-const {getAllProducts,getProductById,updateProduct,addToCart,showCart} =require('../Controllers/ProductController')
-
-
+const express = require('express');
+const router = express.Router();
+const {
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  addToCart,
+  removeFromCart,
+  showCart,
+} = require('../Controllers/ProductController');
 
 router.get('/', getAllProducts);
 
@@ -12,6 +17,8 @@ router.put('/:id', updateProduct);
 
 router.post('/cart/addToCart', addToCart);
 
+router.post('/cart/removeFromCart', removeFromCart);
+
 router.get('/cart/showCart', showCart);
 
-module.exports=router;
+module.exports = router;
