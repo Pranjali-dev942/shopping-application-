@@ -1,12 +1,14 @@
 const express = require('express');
 const app = express();
+const middleware = require('./Middleware/Authmiddleware')
+
 const authRoutes = require('./Routes/AuthRoutes');
 const productRoutes = require('./Routes/ProductRoutes');
 
-const port = 8000;
+const port = 8080;
 
 app.use(express.json());
-
+app.use('/test',middleware)
 app.use('/auth', authRoutes);
 app.use('/product', productRoutes);
 
