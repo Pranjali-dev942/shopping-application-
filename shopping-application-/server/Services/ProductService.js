@@ -1,12 +1,15 @@
 const express = require('express');
-const products = require('../Data/products');
+// const products = require('../Data/products');
+const {findAllProducts,findProductById} = require('../DbQueries/productsQueries');
+
 const userCart = require('../Data/userCart');
 
 class ProductService {
-  static GetAllProducts = () => {
-    console.log(products);
-    if (products.length > 0) {
-      return products;
+  static GetAllProducts = async () => {
+    const result = await findAllProducts()
+    console.log(result);
+    if (result.length > 0) {
+      return result;
     }
     return null;
   };

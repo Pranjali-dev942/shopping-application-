@@ -14,5 +14,6 @@ let products = [
       description: 'a good laptop',
     },
   ];
+  // Object.freeze(products);
 
-  module.exports = products;
+  module.exports = {products};

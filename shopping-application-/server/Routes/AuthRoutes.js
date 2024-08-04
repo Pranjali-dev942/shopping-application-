@@ -4,10 +4,12 @@ const {
   register,
   login,
   logout,
-  deleteUser,
+  deleteUser,generateToken
 } = require('../Controllers/AuthController');
 
 router.post('/register', register);
+
+router.get('/generateToken', generateToken);
 
 router.post('/login', login);
 router.post('/logout', logout);
