@@ -4,8 +4,8 @@ const { ProductService } = require('../Services/ProductService');
 const products = require('../Data/products');
 const userCart = require('../Data/userCart');
 
-const getAllProducts = (req, res) => {
-  const productAll = ProductService.GetAllProducts();
+const getAllProducts = async (req, res) => {
+  const productAll =  await ProductService.GetAllProducts();
   console.log(productAll, 'prof');
   if (productAll == null) {
     return res.status(404).json({ message: 'There are no products' });
