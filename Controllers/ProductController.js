@@ -33,6 +33,16 @@ const getProductById = async (req, res) => {
   }
 };
 
+const addNewProduct = async(req, res) => {
+  const { id, name, quantity, price, description } = req.body
+  const addProductResult = await ProductService.AddNewProduct(id, name, quantity, price, description);
+  if(addProductResult == "the id is already present"){
+    return res.status(404).json({message:addProductResult});
+  }
+  return res.status(200).send(addProductResult);
+
+}
+
 const updateProduct = (req, res) => {};
 
 const addToCart = (req, res) => {
@@ -83,4 +93,5 @@ module.exports = {
   addToCart,
   removeFromCart,
   showCart,
+  addNewProduct
 };
