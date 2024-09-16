@@ -1,32 +1,30 @@
-const express = require ('express');
+const express = require("express");
 const app = express();
-const authRoutes = require('./Routes/AuthRoutes');
-const productRoutes = require('./Routes/ProductRoutes');
-const {connectToDataBase} = require('../server/Db/MongoClient');
+const authRoutes = require("./Routes/AuthRoutes");
+const productRoutes = require("./Routes/ProductRoutes");
+const { connectToDataBase } = require("./Db/MongoClient");
 
 const port = 8000;
 
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-app.use('/product', productRoutes);
- 
-connectToDbAndServer = async()=>{
+app.use("/auth", authRoutes);
+app.use("/product", productRoutes);
+
+connectToDbAndServer = async () => {
   try {
-    const db = await connectToDataBase()
+    const db = await connectToDataBase();
     app.listen(port, () => {
       console.log(`listeninggggg at port ${port}`);
       console.log(
-        'Click on the link: ' + ` \x1b[36mhttp://localhost:${port}\x1b[0m`
+        "Click on the link: " + ` \x1b[36mhttp://localhost:${port}\x1b[0m`
       );
     });
+  } catch (error) {
+    console.log("error while connecting to db or server", error);
+    throw error;
   }
-catch(error){
-  console.log ("error while connecting to db or server",error)
-  throw error
-}
-
-}
+};
 
 // connectToDbAndServerBySql = async()=>{
 //   try {
@@ -44,20 +42,13 @@ catch(error){
 // }
 
 // }
- connectToDbAndServer();
+connectToDbAndServer();
 // connectToDbAndServerBySql();
 
-
-
-
- 
-    // const db = await mongoClient()
-    // app.listen(port, () => {
-    //   console.log(`listeninggggg at port ${port}`);
-    //   console.log(
-    //     'Click on the link: ' + ` \x1b[36mhttp://localhost:${port}\x1b[0m`
-    //   );
-    // });
- 
-
-
+// const db = await mongoClient()
+// app.listen(port, () => {
+//   console.log(`listeninggggg at port ${port}`);
+//   console.log(
+//     'Click on the link: ' + ` \x1b[36mhttp://localhost:${port}\x1b[0m`
+//   );
+// });

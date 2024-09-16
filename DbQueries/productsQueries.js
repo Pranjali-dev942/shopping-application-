@@ -15,6 +15,11 @@ const userCart = require('../Data/userCart');
     return getDb().collection('products').findOne({id:productId});
  }
 
+ const addNewProductInProducts = async(id,name,quantity,price,description) =>{
+    await connectToDataBase();
+    return getDb().collection('products').insertOne({id:id,name:name,quantity:quantity,price:price,description:description});
+ }
+
  const findUsercartById =async(productId)=>{
    await connectToDataBase();
    return getDb().collection('usercart').findOne({id:productId});
@@ -47,4 +52,4 @@ const userCart = require('../Data/userCart');
 //    result =getDb().collection('products')
 //  }
    
- module.exports={findAllProducts,findProductById,updateProductQuantity,findUsercartById,insertUsercart,updateCartQuantity ,findAllProductInUsercart}
+ module.exports={findAllProducts,findProductById, addNewProductInProducts,updateProductQuantity,findUsercartById,insertUsercart,updateCartQuantity ,findAllProductInUsercart}

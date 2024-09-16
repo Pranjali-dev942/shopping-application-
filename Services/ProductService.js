@@ -1,6 +1,6 @@
 const express = require('express');
 // const products = require('../Data/products');
-const {findAllProducts,findProductById,updateProductQuantity,findUsercartById,insertUsercart,updateCartQuantity,findAllProductInUsercart} = require('../DbQueries/productsQueries');
+const {findAllProducts,findProductById,updateProductQuantity,findUsercartById,insertUsercart,updateCartQuantity,findAllProductInUsercart,addNewProductInProducts} = require('../DbQueries/productsQueries');
 // const {findAllProducts,findAllProductsById}=require('../SQL/SqlQueries/ProductQueries')
 
 const userCart = require('../Data/userCart');
@@ -33,7 +33,7 @@ class ProductService {
   // };
 
 static GetProductById = async (productId) => {
-  const result = await findAllProductsById(productId)
+  const result = await findProductById(productId)
    console.log(result,"productID")
    return result
   };
@@ -56,6 +56,17 @@ static GetProductById = async (productId) => {
 
   //   return idFound;
   // };
+
+  static AddNewProduct = async(id, name, quantity, price, description) =>{
+    let findIdInDB = await findProductById(id);
+    if(findIdInDB == null){
+      const result = await addNewProductInProducts(id,name,quantity,price,description);
+      return result;
+    }
+    else{
+      return "the id is already present";
+    }
+  }
 
   static AddToCart = async (productId, quantity) => {
     let isValidString = '';
