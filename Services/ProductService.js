@@ -68,9 +68,30 @@ static GetProductById = async (productId) => {
     }
   }
 
+
+
+  static updateProductQuantityInProducts = async (id, quantity) => {
+    console.log("dsfg");
+    let findInDB = await findProductById(id);
+    console.log(findInDB);
+    if(findInDB == null){
+      return "Please provide a valid product id";
+    }
+    
+      console.log(findInDB);
+      const currentQuantity = findInDB.quantity;
+      const result = await updateProductQuantity(id, quantity + currentQuantity);
+      return result;
+    
+
+  }
+
   static AddToCart = async (productId, quantity) => {
     let isValidString = '';
-   const result =  await findProductById(productId)
+   const result =  await findProductById(productId);      // checking in products
+   const checkInCart = await findUsercartById(productId);  // checking in cart
+
+   console.log(checkInCart);
    
    console .log(result,"result of add to cart")
     // if (!this.IsValidId(products, productId)) {
@@ -85,29 +106,51 @@ static GetProductById = async (productId) => {
         return isValidString;
     }
 
-    const quanitityByDb =result.quantity
-    //product collection mein product id me jo saman hai uska quantity  => q -qdb
-    //usercart mein check if id is present 
-    //if it is then update quatity 
-    //if its not then add in in usercart quantity 
-    if (quanitityByDb >= quantity){
-     const quantityUpdate=quanitityByDb-quantity
-     const updateQuantity=await updateProductQuantity(productId,quantityUpdate)
-     const usercartCheck =await findUsercartById(productId)
-     const productToBeAdded = {...result}
-     if(usercartCheck==null){
-     productToBeAdded.quantity=quantity
-     const addProductInCart = await insertUsercart (productToBeAdded) 
-     }
+    if(checkInCart == null){
+
+      const quanitityByDb =result.quantity
+      //product collection mein product id me jo saman hai uska quantity  => q -qdb
+      //usercart mein check if id is present 
+      //if it is then update quatity 
+      //if its not then add in in usercart quantity 
+      if (quanitityByDb >= quantity){
+       const quantityUpdate=quanitityByDb-quantity
+       const updateQuantity=await updateProductQuantity(productId,quantityUpdate)
+       const usercartCheck =await findUsercartById(productId)
+       const productToBeAdded = {...result}
+       if(usercartCheck==null){
+       productToBeAdded.quantity=quantity
+       const addProductInCart = await insertUsercart (productToBeAdded) 
+       }
+      else{
+       const updatedQuantityUsercart=usercartCheck.quantity+quantity
+       const updateCartQty = updateCartQuantity(productId,updatedQuantityUsercart)
+      }
+  
+      } 
+       else{
+        return "We don't have desired quantity";
+       }
+
+    }
     else{
-     const updatedQuantityUsercart=usercartCheck.quantity+quantity
-     updateCartQuantity(productId,updatedQuantityUsercart)
+
+
+      const currentProductQuantity = result.quantity;
+      const currentCartQuntity = checkInCart.quantity;
+
+      if(currentProductQuantity >= quantity){
+        const updateQuantity=await updateProductQuantity(productId, currentProductQuantity - quantity)
+        const updateCartQty = updateCartQuantity(productId,currentCartQuntity + quantity);
+      }
+      else{
+        return "We don't have desired quantity";
+      }
+
+
     }
 
-    } 
-     else{
-      return "We don't have desired quantity";
-     }
+  
     // for (let i = 0; i < products.length; i++) {
     //   if (products[i].id == productId) {
     //     let quantityPossible = this.CheckIfQuantityExists(products, i, quantity);
@@ -199,13 +242,12 @@ static GetProductById = async (productId) => {
 //db interaction
   static RemoveFromCart = async (productId, quantity) =>{
   const productFromCart =  await findUsercartById(productId)
-  if(findUsercartById == null){
+  if(productFromCart == null){
     return "Product of this Id doesn't exist in Cart"
      }
   else{
    if(productFromCart.quantity<quantity){
     return "Don't have desired quantity in your cart"
-    
    } 
 
    else{

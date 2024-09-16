@@ -10,7 +10,7 @@ const userCart = require('../Data/userCart');
  }
 
 
- const findProductById =async(productId)=>{
+ const findProductById = async(productId)=>{
     await connectToDataBase();
     return getDb().collection('products').findOne({id:productId});
  }
@@ -22,7 +22,7 @@ const userCart = require('../Data/userCart');
 
  const findUsercartById =async(productId)=>{
    await connectToDataBase();
-   return getDb().collection('usercart').findOne({id:productId});
+   return getDb().collection('userCart').findOne({id:productId});
 }
  const updateProductQuantity =async (productId,quantity)=>{
    await connectToDataBase();
@@ -45,7 +45,7 @@ const userCart = require('../Data/userCart');
 
  const findAllProductInUsercart = async () =>{
   await connectToDataBase ();
-  return getDb().collection('userCart').findOne().toArray()
+  return getDb().collection('userCart').find().toArray();
  }
 //  const findProductByQuantity = async (productId)=>{
 //    await connectToDataBase ();

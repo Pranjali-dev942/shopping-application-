@@ -3,20 +3,20 @@ const router = express.Router();
 const {
   getAllProducts,
   getProductById,
-  updateProduct,
   addToCart,
   removeFromCart,
   showCart,
   addNewProduct,
+  updateProductQuantityInProducts
 } = require("../Controllers/ProductController");
 
 router.get("/", getAllProducts);
 
 router.get("/:id", getProductById);
 
-router.put("/:id", updateProduct);
-
 router.post("/addNewProduct", addNewProduct);
+
+router.post("/updateProductQunatity", updateProductQuantityInProducts);
 
 router.post("/cart/addToCart", addToCart);
 

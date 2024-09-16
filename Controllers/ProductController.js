@@ -43,7 +43,20 @@ const addNewProduct = async(req, res) => {
 
 }
 
-const updateProduct = (req, res) => {};
+const updateProductQuantityInProducts = async (req, res) => {
+  const {id,quantity} = req.body;
+  if(quantity<=0){
+    return res.status(404).json({message: "Please provide valid quantity"});
+  }
+  // const desiredProduct =  await ProductService.GetProductById(id);
+  // if(desiredProduct == null){
+  //   return res.status(404).json({message: "Please provide a valid product Id"});
+  // }
+  console.log(quantity,id);
+  const result = await ProductService.updateProductQuantityInProducts(id,quantity);
+  return res.status(200).send(result);
+
+};
 
 const addToCart = (req, res) => {
   const { id, quantity } = req.body;
@@ -74,7 +87,7 @@ const removeFromCart = async (req, res) =>{
     return res.status(200).json({message: "Don't have desired quantity in your cart'"});
   }
   else{
-    return res.status(200).send(removeFromCartD.userCart);
+    return res.status(200).send(removeFromCartD);
   }
   
 }
@@ -89,9 +102,10 @@ const showCart = (req, res) => {
 module.exports = {
   getAllProducts,
   getProductById,
-  updateProduct,
+  addNewProduct,
+  updateProductQuantityInProducts,
   addToCart,
   removeFromCart,
   showCart,
-  addNewProduct
+  
 };
